@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EduSelect Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <i class="fas fa-graduation-cap"></i>
+            <h1>EduSelect Pro</h1>
+        </div>
+        <nav>
+            <a href="/index.html" id="nav-home">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="/dashboard.html" id="nav-dashboard" class="active">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="/colleges.html" id="nav-colleges">
+                <i class="fas fa-university"></i> Colleges
+            </a>
+            <a href="/compare.html" id="nav-compare">
+                <i class="fas fa-balance-scale"></i> Compare
+            </a>
+            <a href="/admin.html" id="nav-admin" style="display: none;">
+                <i class="fas fa-cog"></i> Admin
+            </a>
+        </nav>
+        <div class="user-info">
+            <span id="welcome-user">Welcome, User</span>
+            <button class="btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <section class="dashboard">
+        <h2 class="title">Student Dashboard</h2>
+        
+        <!-- User Profile -->
+        <div class="profile-section">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="profile-info">
+                    <h3 id="profile-name">Alex Johnson</h3>
+                    <p id="profile-role">Student</p>
+                    <p id="profile-email">alex@example.com</p>
+                </div>
+                <button class="btn btn-outline" onclick="editProfile()">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+            </div>
+        </div>
+
+        <!-- Dashboard Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="colleges-viewed">0</div>
+                    <div class="stat-label">Colleges Viewed</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-bookmark"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="colleges-saved">0</div>
+                    <div class="stat-label">Colleges Saved</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="comparisons-made">0</div>
+                    <div class="stat-label">Comparisons Made</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-file-alt"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="applications">0</div>
+                    <div class="stat-label">Applications</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="dashboard-container">
+            <a href="/colleges.html" class="card-link">
+                <div class="card">
+                    <i class="fas fa-search"></i>
+                    <h3>Search Colleges</h3>
+                    <p>Find colleges based on your preferences</p>
+                </div>
+            </a>
+            
+            <a href="/compare.html" class="card-link">
+                <div class="card">
+                    <i class="fas fa-balance-scale"></i>
+                    <h3>Compare Colleges</h3>
+                    <p>Side-by-side comparison</p>
+                    <span class="badge" id="compare-badge">0 selected</span>
+                </div>
+            </a>
+            
+            <div class="card" onclick="viewSaved()">
+                <i class="fas fa-bookmark"></i>
+                <h3>Saved Colleges</h3>
+                <p>Access your shortlisted colleges</p>
+                <span class="badge success" id="saved-badge">0 saved</span>
+            </div>
+            
+            <div class="card" onclick="viewApplications()">
+                <i class="fas fa-file-alt"></i>
+                <h3>Applications</h3>
+                <p>Track your college applications</p>
+                <span class="badge secondary">0 pending</span>
+            </div>
+            
+            <div class="card" onclick="viewRecommendations()">
+                <i class="fas fa-star"></i>
+                <h3>Recommendations</h3>
+                <p>Personalized college suggestions</p>
+            </div>
+            
+            <div class="card" onclick="viewProfile()">
+                <i class="fas fa-user-cog"></i>
+                <h3>Profile Settings</h3>
+                <p>Update your preferences</p>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="activity-section">
+            <h3><i class="fas fa-history"></i> Recent Activity</h3>
+            <div id="activity-list">
+                <div class="activity-item">
+                    <i class="fas fa-eye"></i>
+                    <div class="activity-details">
+                        <div class="activity-text">Viewed ABC Engineering College</div>
+                        <div class="activity-time">2 hours ago</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <i class="fas fa-bookmark"></i>
+                    <div class="activity-details">
+                        <div class="activity-text">Saved XYZ University</div>
+                        <div class="activity-time">Yesterday</div>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <i class="fas fa-balance-scale"></i>
+                    <div class="activity-details">
+                        <div class="activity-text">Compared 3 colleges</div>
+                        <div class="activity-time">3 days ago</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>EduSelect Pro</h3>
+                <p>Your trusted partner in making informed college decisions.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/dashboard.html">Dashboard</a></li>
+                    <li><a href="/colleges.html">Colleges</a></li>
+                    <li><a href="/compare.html">Compare</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <p><i class="fas fa-question-circle"></i> Help Center</p>
+                <p><i class="fas fa-headset"></i> 24/7 Support</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 EduSelect Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">Notification message</span>
+    </div>
+
+    <script>
+        // Check authentication
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (!currentUser) {
+                window.location.href = '/index.html';
+                return;
+            }
+            
+            // Update user info
+            document.getElementById('welcome-user').textContent = `Welcome, ${currentUser.username}`;
+            document.getElementById('profile-name').textContent = currentUser.username;
+            document.getElementById('profile-role').textContent = currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1);
+            document.getElementById('profile-email').textContent = currentUser.email || 'No email provided';
+            
+            // Show admin link if admin
+            if (currentUser.role === 'admin') {
+                document.getElementById('nav-admin').style.display = 'flex';
+            }
+            
+            // Load user stats
+            loadUserStats();
+        });
+
+        function loadUserStats() {
+            const savedColleges = JSON.parse(localStorage.getItem('savedColleges')) || [];
+            const comparisonList = JSON.parse(localStorage.getItem('comparisonList')) || [];
+            const activity = JSON.parse(localStorage.getItem('userActivity')) || [];
+            
+            // Update stats
+            document.getElementById('colleges-saved').textContent = savedColleges.length;
+            document.getElementById('comparisons-made').textContent = comparisonList.length;
+            document.getElementById('saved-badge').textContent = `${savedColleges.length} saved`;
+            document.getElementById('compare-badge').textContent = `${comparisonList.length} selected`;
+            
+            // Update activity list
+            if (activity.length > 0) {
+                const activityList = document.getElementById('activity-list');
+                activityList.innerHTML = '';
+                
+                activity.slice(0, 5).forEach(item => {
+                    const activityItem = document.createElement('div');
+                    activityItem.className = 'activity-item';
+                    activityItem.innerHTML = `
+                        <i class="fas ${item.icon || 'fa-history'}"></i>
+                        <div class="activity-details">
+                            <div class="activity-text">${item.text}</div>
+                            <div class="activity-time">${item.time}</div>
+                        </div>
+                    `;
+                    activityList.appendChild(activityItem);
+                });
+            }
+        }
+
+        function editProfile() {
+            showNotification('Profile edit feature coming soon!', 'info');
+        }
+
+        function viewSaved() {
+            window.location.href = '/colleges.html?view=saved';
+        }
+
+        function viewApplications() {
+            showNotification('Applications feature coming soon!', 'info');
+        }
+
+        function viewRecommendations() {
+            showNotification('Recommendations feature coming soon!', 'info');
+        }
+
+        function viewProfile() {
+            showNotification('Profile settings coming soon!', 'info');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = '/index.html';
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

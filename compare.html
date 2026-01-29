@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Colleges - EduSelect Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <i class="fas fa-graduation-cap"></i>
+            <h1>EduSelect Pro</h1>
+        </div>
+        <nav>
+            <a href="/index.html" id="nav-home">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="/dashboard.html" id="nav-dashboard">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="/colleges.html" id="nav-colleges">
+                <i class="fas fa-university"></i> Colleges
+            </a>
+            <a href="/compare.html" id="nav-compare" class="active">
+                <i class="fas fa-balance-scale"></i> Compare
+            </a>
+            <a href="/admin.html" id="nav-admin" style="display: none;">
+                <i class="fas fa-cog"></i> Admin
+            </a>
+        </nav>
+        <div class="user-info">
+            <span id="welcome-user">Welcome, User</span>
+            <button class="btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="compare-container">
+        <h2 class="title">College Comparison</h2>
+        
+        <!-- Comparison Controls -->
+        <div class="compare-controls">
+            <div class="control-left">
+                <button class="btn btn-secondary" onclick="window.location.href='/colleges.html'">
+                    <i class="fas fa-plus"></i> Add More Colleges
+                </button>
+                <button class="btn btn-outline" onclick="clearComparison()">
+                    <i class="fas fa-trash"></i> Clear All
+                </button>
+            </div>
+            <div class="control-right">
+                <button class="btn" onclick="printComparison()">
+                    <i class="fas fa-print"></i> Print
+                </button>
+                <button class="btn btn-secondary" onclick="exportComparison()">
+                    <i class="fas fa-download"></i> Export
+                </button>
+            </div>
+        </div>
+
+        <!-- Comparison Table -->
+        <div class="compare-table-container">
+            <div id="comparison-content">
+                <div class="empty-state" id="empty-state">
+                    <i class="fas fa-balance-scale"></i>
+                    <h3>No colleges to compare</h3>
+                    <p>Add colleges from the colleges page to start comparing</p>
+                    <a href="/colleges.html" class="btn btn-secondary">
+                        <i class="fas fa-university"></i> Browse Colleges
+                    </a>
+                </div>
+                
+                <table class="compare-table" id="compare-table" style="display: none;">
+                    <thead>
+                        <tr id="table-headers">
+                            <!-- Headers will be added dynamically -->
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Rows will be added dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Comparison Summary -->
+        <div class="summary-section" id="summary-section" style="display: none;">
+            <h3><i class="fas fa-chart-bar"></i> Comparison Summary</h3>
+            <div class="summary-cards" id="summary-cards">
+                <!-- Summary cards will be added dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>EduSelect Pro</h3>
+                <p>Your trusted partner in making informed college decisions.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/dashboard.html">Dashboard</a></li>
+                    <li><a href="/colleges.html">Colleges</a></li>
+                    <li><a href="/compare.html">Compare</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <p><i class="fas fa-question-circle"></i> Help Center</p>
+                <p><i class="fas fa-headset"></i> 24/7 Support</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 EduSelect Pro. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">Notification message</span>
+    </div>
+
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (!currentUser) {
+                window.location.href = '/index.html';
+                return;
+            }
+            
+            document.getElementById('welcome-user').textContent = `Welcome, ${currentUser.username}`;
+            
+            if (currentUser.role === 'admin') {
+                document.getElementById('nav-admin').style.display = 'flex';
+            }
+            
+            loadComparison();
+        });
+
+        function loadComparison() {
+            const comparisonList = JSON.parse(localStorage.getItem('comparisonList')) || [];
+            const emptyState = document.getElementById('empty-state');
+            const compareTable = document.getElementById('compare-table');
+            const summarySection = document.getElementById('summary-section');
+            
+            if (comparisonList.length === 0) {
+                emptyState.style.display = 'block';
+                compareTable.style.display = 'none';
+                summarySection.style.display = 'none';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            compareTable.style.display = 'table';
+            summarySection.style.display = 'block';
+            
+            // Build table headers
+            const tableHeaders = document.getElementById('table-headers');
+            tableHeaders.innerHTML = '<th>Criteria</th>';
+            
+            comparisonList.forEach((college, index) => {
+                tableHeaders.innerHTML += `
+                    <th class="compare-college-header">
+                        <h4>${college.name}</h4>
+                        <p><i class="fas fa-map-marker-alt"></i> ${college.location}</p>
+                        <button class="remove-college" onclick="removeFromComparison(${college.id})">
+                            <i class="fas fa-times"></i> Remove
+                        </button>
+                    </th>
+                `;
+            });
+            
+            // Add empty headers for remaining slots
+            for (let i = comparisonList.length; i < 4; i++) {
+                tableHeaders.innerHTML += `
+                    <th class="compare-college-header">
+                        <h4>Add College</h4>
+                        <p>Select from list to compare</p>
+                        <a href="/colleges.html" class="btn" style="padding: 0.3rem 0.8rem; font-size: 0.9rem;">
+                            <i class="fas fa-plus"></i> Add
+                        </a>
+                    </th>
+                `;
+            }
+            
+            // Build table body
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = '';
+            
+            // Define comparison criteria
+            const criteria = [
+                { label: 'Rating', key: 'rating', format: (val) => `${val}/5`, type: 'number' },
+                { label: 'Location', key: 'location', type: 'text' },
+                { label: 'Established', key: 'established', type: 'number' },
+                { label: 'Accreditation', key: 'accreditation', type: 'text' },
+                { label: 'Annual Fees', key: 'fees', type: 'currency' },
+                { label: 'Placement Rate', key: 'placement', type: 'percentage' },
+                { label: 'Average Package', key: 'avgPackage', type: 'currency' },
+                { label: 'Courses', key: 'courses', format: (val) => val.slice(0, 3).join(', '), type: 'text' },
+                { label: 'Key Features', key: 'features', format: (val) => val.slice(0, 3).join(', '), type: 'text' }
+            ];
+            
+            criteria.forEach(criterion => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td class="criteria-header">${criterion.label}</td>`;
+                
+                comparisonList.forEach(college => {
+                    let value = college[criterion.key];
+                    if (criterion.format) {
+                        value = criterion.format(value);
+                    }
+                    row.innerHTML += `<td>${value || 'N/A'}</td>`;
+                });
+                
+                // Add empty cells for remaining slots
+                for (let i = comparisonList.length; i < 4; i++) {
+                    row.innerHTML += '<td>-</td>';
+                }
+                
+                tableBody.appendChild(row);
+            });
+            
+            // Update summary
+            updateSummary(comparisonList);
+        }
+
+        function updateSummary(colleges) {
+            if (colleges.length === 0) return;
+            
+            const summaryCards = document.getElementById('summary-cards');
+            
+            // Find best values
+            const bestRating = Math.max(...colleges.map(c => c.rating));
+            const bestRatingCollege = colleges.find(c => c.rating === bestRating);
+            
+            // Parse fees to numbers for comparison
+            const feesValues = colleges.map(c => parseFloat(c.fees.replace(/[^\d.]/g, '')) || 0);
+            const lowestFees = Math.min(...feesValues);
+            const lowestFeesCollege = colleges.find(c => 
+                parseFloat(c.fees.replace(/[^\d.]/g, '')) === lowestFees
+            );
+            
+            const placementValues = colleges.map(c => parseFloat(c.placement) || 0);
+            const highestPlacement = Math.max(...placementValues);
+            const highestPlacementCollege = colleges.find(c => 
+                parseFloat(c.placement) === highestPlacement
+            );
+            
+            // Parse package values
+            const packageValues = colleges.map(c => parseFloat(c.avgPackage.replace(/[^\d.]/g, '')) || 0);
+            const highestPackage = Math.max(...packageValues);
+            const highestPackageCollege = colleges.find(c => 
+                parseFloat(c.avgPackage.replace(/[^\d.]/g, '')) === highestPackage
+            );
+            
+            summaryCards.innerHTML = `
+                <div class="summary-card">
+                    <div class="summary-label">Best Rating</div>
+                    <div class="summary-value">${bestRating}/5</div>
+                    <div class="summary-college">${bestRatingCollege.name}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Lowest Fees</div>
+                    <div class="summary-value">${lowestFeesCollege.fees}</div>
+                    <div class="summary-college">${lowestFeesCollege.name}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Highest Placement</div>
+                    <div class="summary-value">${highestPlacementCollege.placement}</div>
+                    <div class="summary-college">${highestPlacementCollege.name}</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Best Package</div>
+                    <div class="summary-value">${highestPackageCollege.avgPackage}</div>
+                    <div class="summary-college">${highestPackageCollege.name}</div>
+                </div>
+            `;
+        }
+
+        function removeFromComparison(collegeId) {
+            let comparisonList = JSON.parse(localStorage.getItem('comparisonList')) || [];
+            comparisonList = comparisonList.filter(c => c.id !== collegeId);
+            localStorage.setItem('comparisonList', JSON.stringify(comparisonList));
+            
+            showNotification('College removed from comparison', 'info');
+            loadComparison();
+        }
+
+        function clearComparison() {
+            if (confirm('Are you sure you want to clear all comparisons?')) {
+                localStorage.removeItem('comparisonList');
+                showNotification('Comparison cleared', 'success');
+                loadComparison();
+            }
+        }
+
+        function printComparison() {
+            window.print();
+        }
+
+        function exportComparison() {
+            const comparisonList = JSON.parse(localStorage.getItem('comparisonList')) || [];
+            
+            if (comparisonList.length === 0) {
+                showNotification('No colleges to export', 'error');
+                return;
+            }
+            
+            // Create CSV content
+            let csvContent = "College Name,Location,Rating,Fees,Placement,Average Package\n";
+            
+            comparisonList.forEach(college => {
+                csvContent += `"${college.name}","${college.location}",${college.rating},"${college.fees}","${college.placement}","${college.avgPackage}"\n`;
+            });
+            
+            // Create download link
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'college_comparison.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            
+            showNotification('Comparison exported as CSV', 'success');
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = '/index.html';
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

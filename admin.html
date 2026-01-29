@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - EduSelect Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo-container">
+            <i class="fas fa-graduation-cap"></i>
+            <h1>EduSelect Pro - Admin Panel</h1>
+        </div>
+        <nav>
+            <a href="/index.html" id="nav-home">
+                <i class="fas fa-home"></i> Home
+            </a>
+            <a href="/dashboard.html" id="nav-dashboard">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </a>
+            <a href="/colleges.html" id="nav-colleges">
+                <i class="fas fa-university"></i> Colleges
+            </a>
+            <a href="/compare.html" id="nav-compare">
+                <i class="fas fa-balance-scale"></i> Compare
+            </a>
+            <a href="/admin.html" id="nav-admin" class="active">
+                <i class="fas fa-cog"></i> Admin
+            </a>
+        </nav>
+        <div class="user-info">
+            <span id="welcome-user">Welcome, Admin</span>
+            <button class="btn-logout" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </header>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard">
+        <h2 class="title">Admin Dashboard</h2>
+        
+        <!-- Admin Stats -->
+        <div class="admin-stats">
+            <div class="stat-card admin">
+                <div class="stat-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="total-colleges">0</div>
+                    <div class="stat-label">Total Colleges</div>
+                </div>
+            </div>
+            
+            <div class="stat-card admin">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="total-users">0</div>
+                    <div class="stat-label">Total Users</div>
+                </div>
+            </div>
+            
+            <div class="stat-card admin">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="active-comparisons">0</div>
+                    <div class="stat-label">Active Comparisons</div>
+                </div>
+            </div>
+            
+            <div class="stat-card admin">
+                <div class="stat-icon">
+                    <i class="fas fa-eye"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-number" id="total-views">0</div>
+                    <div class="stat-label">Total Views</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Tabs -->
+        <div class="admin-tabs">
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="showTab('colleges-tab')">
+                    <i class="fas fa-university"></i> Manage Colleges
+                </button>
+                <button class="tab-btn" onclick="showTab('users-tab')">
+                    <i class="fas fa-users"></i> Manage Users
+                </button>
+                <button class="tab-btn" onclick="showTab('reports-tab')">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </button>
+                <button class="tab-btn" onclick="showTab('settings-tab')">
+                    <i class="fas fa-cogs"></i> Settings
+                </button>
+            </div>
+            
+            <!-- Colleges Tab -->
+            <div class="tab-content active" id="colleges-tab">
+                <div class="tab-header">
+                    <h3><i class="fas fa-university"></i> Manage Colleges</h3>
+                    <button class="btn btn-secondary" onclick="showAddCollegeModal()">
+                        <i class="fas fa-plus"></i> Add New College
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>College Name</th>
+                                <th>Location</th>
+                                <th>Rating</th>
+                                <th>Fees</th>
+                                <th>Placement</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="colleges-table-body">
+                            <!-- Colleges will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Users Tab -->
+            <div class="tab-content" id="users-tab">
+                <div class="tab-header">
+                    <h3><i class="fas fa-users"></i> Manage Users</h3>
+                    <button class="btn btn-secondary" onclick="showAddUserModal()">
+                        <i class="fas fa-user-plus"></i> Add New User
+                    </button>
+                </div>
+                
+                <div class="table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Joined</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Reports Tab -->
+            <div class="tab-content" id="reports-tab">
+                <div class="tab-header">
+                    <h3><i class="fas fa-chart-bar"></i> Reports & Analytics</h3>
+                </div>
+                
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h4><i class="fas fa-chart-line"></i> College Views</h4>
+                        <div class="chart-placeholder">
+                            <canvas id="views-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <h4><i class="fas fa-balance-scale"></i> Comparison Activity</h4>
+                        <div class="chart-placeholder">
+                            <canvas id="comparison-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <h4><i class="fas fa-bookmark"></i> Saved Colleges</h4>
+                        <div class="chart-placeholder">
+                            <canvas id="saved-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="report-card">
+                        <h4><i class="fas fa-user-plus"></i> User Growth</h4>
+                        <div class="chart-placeholder">
+                            <canvas id="users-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settings-tab">
+                <div class="tab-header">
+                    <h3><i class="fas fa-cogs"></i> System Settings</h3>
+                </div>
+                
+                <div class="settings-form">
+                    <div class="form-group">
+                        <label>System Name</label>
+                        <input type="text" id="system-name" value="EduSelect Pro">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Contact Email</label>
+                        <input type="email" id="contact-email" value="admin@eduselectpro.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Max Colleges to Compare</label>
+                        <select id="max-comparison">
+                            <option value="3">3</option>
+                            <option value="4" selected>4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Enable User Registration</label>
+                        <input type="checkbox" id="enable-registration" checked>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Enable Email Notifications</label>
+                        <input type="checkbox" id="enable-notifications" checked>
+                    </div>
+                    
+                    <button class="btn" onclick="saveSettings()">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>EduSelect Pro</h3>
+                <p>Admin Panel v2.0</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/dashboard.html">Dashboard</a></li>
+                    <li><a href="/colleges.html">Colleges</a></li>
+                    <li><a href="/admin.html">Admin</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Admin</h3>
+                <p><i class="fas fa-shield-alt"></i> Secure Access</p>
+                <p><i class="fas fa-history"></i> Activity Log</p>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 EduSelect Pro. Admin privileges only.</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="add-college-modal" class="modal">
+        <!-- Same as in colleges.html -->
+    </div>
+    
+    <div id="add-user-modal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2><i class="fas fa-user-plus"></i> Add New User</h2>
+            
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="new-username" placeholder="Enter username">
+            </div>
+            
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="new-email" placeholder="Enter email">
+            </div>
+            
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="new-password" placeholder="Enter password">
+            </div>
+            
+            <div class="form-group">
+                <label>Role</label>
+                <select id="new-role">
+                    <option value="student">Student</option>
+                    <option value="parent">Parent</option>
+                    <option value="admin">Admin</option>
+                </select>
+            </div>
+            
+            <button class="btn" onclick="addUser()">
+                <i class="fas fa-save"></i> Create User
+            </button>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notification-text">Notification message</span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Check admin access
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (!currentUser || currentUser.role !== 'admin') {
+                showNotification('Admin access required', 'error');
+                setTimeout(() => {
+                    window.location.href = '/index.html';
+                }, 2000);
+                return;
+            }
+            
+            document.getElementById('welcome-user').textContent = `Welcome, ${currentUser.username}`;
+            loadAdminData();
+            loadCharts();
+        });
+
+        function loadAdminData() {
+            // Load colleges
+            const colleges = JSON.parse(localStorage.getItem('colleges')) || [];
+            document.getElementById('total-colleges').textContent = colleges.length;
+            
+            // Load colleges table
+            const collegesTable = document.getElementById('colleges-table-body');
+            collegesTable.innerHTML = '';
+            
+            colleges.forEach(college => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${college.id}</td>
+                    <td>${college.name}</td>
+                    <td>${college.location}</td>
+                    <td>${college.rating}/5</td>
+                    <td>${college.fees}</td>
+                    <td>${college.placement}</td>
+                    <td>
+                        <button class="btn-small btn-warning" onclick="editCollege(${college.id})">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-small btn-danger" onclick="deleteCollege(${college.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                collegesTable.appendChild(row);
+            });
+            
+            // Load users
+            const users = JSON.parse(localStorage.getItem('users')) || [
+                { username: 'admin', email: 'admin@eduselect.com', role: 'admin', joined: '2024-01-01', active: true },
+                { username: 'student', email: 'student@eduselect.com', role: 'student', joined: '2024-02-01', active: true },
+                { username: 'parent', email: 'parent@eduselect.com', role: 'parent', joined: '2024-03-01', active: true }
+            ];
+            
+            document.getElementById('total-users').textContent = users.length;
+            
+            // Load users table
+            const usersTable = document.getElementById('users-table-body');
+            usersTable.innerHTML = '';
+            
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${user.username}</td>
+                    <td>${user.email || 'N/A'}</td>
+                    <td><span class="role-badge ${user.role}">${user.role}</span></td>
+                    <td>${user.joined || 'N/A'}</td>
+                    <td><span class="status-badge ${user.active ? 'active' : 'inactive'}">${user.active ? 'Active' : 'Inactive'}</span></td>
+                    <td>
+                        <button class="btn-small btn-warning" onclick="editUser('${user.username}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-small btn-danger" onclick="deleteUser('${user.username}')" ${user.username === 'admin' ? 'disabled' : ''}>
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                usersTable.appendChild(row);
+            });
+            
+            // Load other stats
+            const comparisonList = JSON.parse(localStorage.getItem('comparisonList')) || [];
+            document.getElementById('active-comparisons').textContent = comparisonList.length;
+            
+            // Random views for demo
+            document.getElementById('total-views').textContent = Math.floor(Math.random() * 1000) + 500;
+        }
+
+        function loadCharts() {
+            // College Views Chart
+            const viewsCtx = document.getElementById('views-chart');
+            if (viewsCtx) {
+                new Chart(viewsCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'College Views',
+                            data: [65, 59, 80, 81, 56, 85],
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+            
+            // Comparison Activity Chart
+            const comparisonCtx = document.getElementById('comparison-chart');
+            if (comparisonCtx) {
+                new Chart(comparisonCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                        datasets: [{
+                            label: 'Comparisons Made',
+                            data: [12, 19, 8, 15],
+                            backgroundColor: '#2ecc71'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+        }
+
+        function showTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        function showAddCollegeModal() {
+            document.getElementById('add-college-modal').style.display = 'flex';
+        }
+
+        function showAddUserModal() {
+            document.getElementById('add-user-modal').style.display = 'flex';
+        }
+
+        function addUser() {
+            const username = document.getElementById('new-username').value;
+            const email = document.getElementById('new-email').value;
+            const password = document.getElementById('new-password').value;
+            const role = document.getElementById('new-role').value;
+            
+            if (!username || !email || !password) {
+                showNotification('Please fill all fields', 'error');
+                return;
+            }
+            
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            
+            // Check if username exists
+            if (users.find(u => u.username === username)) {
+                showNotification('Username already exists', 'error');
+                return;
+            }
+            
+            // Add new user
+            const newUser = {
+                username,
+                email,
+                password,
+                role,
+                joined: new Date().toISOString().split('T')[0],
+                active: true
+            };
+            
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            showNotification('User created successfully', 'success');
+            closeModal();
+            loadAdminData();
+            
+            // Clear form
+            document.getElementById('new-username').value = '';
+            document.getElementById('new-email').value = '';
+            document.getElementById('new-password').value = '';
+        }
+
+        function editCollege(collegeId) {
+            window.location.href = `/colleges.html?edit=${collegeId}`;
+        }
+
+        function deleteCollege(collegeId) {
+            if (confirm('Are you sure you want to delete this college?')) {
+                let colleges = JSON.parse(localStorage.getItem('colleges')) || [];
+                colleges = colleges.filter(c => c.id !== collegeId);
+                localStorage.setItem('colleges', JSON.stringify(colleges));
+                
+                showNotification('College deleted', 'success');
+                loadAdminData();
+            }
+        }
+
+        function editUser(username) {
+            showNotification('Edit user feature coming soon', 'info');
+        }
+
+        function deleteUser(username) {
+            if (username === 'admin') {
+                showNotification('Cannot delete main admin account', 'error');
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to delete user ${username}?`)) {
+                let users = JSON.parse(localStorage.getItem('users')) || [];
+                users = users.filter(u => u.username !== username);
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                showNotification('User deleted', 'success');
+                loadAdminData();
+            }
+        }
+
+        function saveSettings() {
+            showNotification('Settings saved successfully', 'success');
+        }
+
+        function closeModal() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('currentUser');
+                window.location.href = '/index.html';
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
