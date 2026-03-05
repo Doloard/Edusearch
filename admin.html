@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,7 +43,7 @@
     <!-- Admin Dashboard -->
     <div class="admin-dashboard">
         <h2 class="title">Admin Dashboard</h2>
-        
+
         <!-- Admin Stats -->
         <div class="admin-stats">
             <div class="stat-card admin">
@@ -54,7 +55,7 @@
                     <div class="stat-label">Total Colleges</div>
                 </div>
             </div>
-            
+
             <div class="stat-card admin">
                 <div class="stat-icon">
                     <i class="fas fa-users"></i>
@@ -64,7 +65,7 @@
                     <div class="stat-label">Total Users</div>
                 </div>
             </div>
-            
+
             <div class="stat-card admin">
                 <div class="stat-icon">
                     <i class="fas fa-chart-line"></i>
@@ -74,7 +75,7 @@
                     <div class="stat-label">Active Comparisons</div>
                 </div>
             </div>
-            
+
             <div class="stat-card admin">
                 <div class="stat-icon">
                     <i class="fas fa-eye"></i>
@@ -102,7 +103,7 @@
                     <i class="fas fa-cogs"></i> Settings
                 </button>
             </div>
-            
+
             <!-- Colleges Tab -->
             <div class="tab-content active" id="colleges-tab">
                 <div class="tab-header">
@@ -111,7 +112,7 @@
                         <i class="fas fa-plus"></i> Add New College
                     </button>
                 </div>
-                
+
                 <div class="table-container">
                     <table class="admin-table">
                         <thead>
@@ -120,8 +121,8 @@
                                 <th>College Name</th>
                                 <th>Location</th>
                                 <th>Rating</th>
-                                <th>Fees</th>
-                                <th>Placement</th>
+                                <th>Fees (₹)</th>
+                                <th>Placement %</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -131,7 +132,7 @@
                     </table>
                 </div>
             </div>
-            
+
             <!-- Users Tab -->
             <div class="tab-content" id="users-tab">
                 <div class="tab-header">
@@ -140,7 +141,7 @@
                         <i class="fas fa-user-plus"></i> Add New User
                     </button>
                 </div>
-                
+
                 <div class="table-container">
                     <table class="admin-table">
                         <thead>
@@ -159,13 +160,13 @@
                     </table>
                 </div>
             </div>
-            
+
             <!-- Reports Tab -->
             <div class="tab-content" id="reports-tab">
                 <div class="tab-header">
                     <h3><i class="fas fa-chart-bar"></i> Reports & Analytics</h3>
                 </div>
-                
+
                 <div class="reports-grid">
                     <div class="report-card">
                         <h4><i class="fas fa-chart-line"></i> College Views</h4>
@@ -173,21 +174,21 @@
                             <canvas id="views-chart"></canvas>
                         </div>
                     </div>
-                    
+
                     <div class="report-card">
                         <h4><i class="fas fa-balance-scale"></i> Comparison Activity</h4>
                         <div class="chart-placeholder">
                             <canvas id="comparison-chart"></canvas>
                         </div>
                     </div>
-                    
+
                     <div class="report-card">
                         <h4><i class="fas fa-bookmark"></i> Saved Colleges</h4>
                         <div class="chart-placeholder">
                             <canvas id="saved-chart"></canvas>
                         </div>
                     </div>
-                    
+
                     <div class="report-card">
                         <h4><i class="fas fa-user-plus"></i> User Growth</h4>
                         <div class="chart-placeholder">
@@ -196,24 +197,24 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Settings Tab -->
             <div class="tab-content" id="settings-tab">
                 <div class="tab-header">
                     <h3><i class="fas fa-cogs"></i> System Settings</h3>
                 </div>
-                
+
                 <div class="settings-form">
                     <div class="form-group">
                         <label>System Name</label>
                         <input type="text" id="system-name" value="EduSelect Pro">
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Contact Email</label>
                         <input type="email" id="contact-email" value="admin@eduselectpro.com">
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Max Colleges to Compare</label>
                         <select id="max-comparison">
@@ -223,17 +224,17 @@
                             <option value="6">6</option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Enable User Registration</label>
                         <input type="checkbox" id="enable-registration" checked>
                     </div>
-                    
+
                     <div class="form-group">
                         <label>Enable Email Notifications</label>
                         <input type="checkbox" id="enable-notifications" checked>
                     </div>
-                    
+
                     <button class="btn" onclick="saveSettings()">
                         <i class="fas fa-save"></i> Save Settings
                     </button>
@@ -247,8 +248,7 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h3>EduSelect Pro</h3>
-                <p>Admin Panel v2.0</p>
-            </div>
+                <p>Admin Panel v2.0</p>            </div>
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
@@ -269,31 +269,79 @@
         </div>
     </footer>
 
-    <!-- Modals -->
-    <div id="add-college-modal" class="modal">
-        <!-- Same as in colleges.html -->
+    <!-- Add College Modal -->
+    <div id="add-college-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h2><i class="fas fa-plus-circle"></i> Add New College</h2>
+
+            <div class="form-group">
+                <label>College Name</label>
+                <input type="text" id="college-name" placeholder="e.g., Indian Institute of Technology">
+            </div>
+
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" id="college-location" placeholder="e.g., Mumbai, Maharashtra">
+            </div>
+
+            <div class="form-group">
+                <label>Rating (out of 5)</label>
+                <input type="number" id="college-rating" min="0" max="5" step="0.1" placeholder="4.5">
+            </div>
+
+            <div class="form-group">
+                <label>Annual Fees (₹)</label>
+                <input type="text" id="college-fees" placeholder="e.g., 2,50,000">
+            </div>
+
+            <div class="form-group">
+                <label>Placement Percentage</label>
+                <input type="number" id="college-placement" min="0" max="100" placeholder="90">
+            </div>
+
+            <div class="form-group">
+                <label>Courses Offered</label>
+                <input type="text" id="college-courses" placeholder="e.g., B.Tech, M.Tech, MBA">
+            </div>
+
+            <div class="form-group">
+                <label>Website</label>
+                <input type="url" id="college-website" placeholder="https://www.college.edu">
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea id="college-description" rows="3" placeholder="Brief description of the college..."></textarea>
+            </div>
+
+            <button class="btn" onclick="addCollege()">
+                <i class="fas fa-save"></i> Save College
+            </button>
+        </div>
     </div>
-    
-    <div id="add-user-modal" class="modal">
+
+    <!-- Add User Modal -->
+    <div id="add-user-modal" class="modal" style="display: none;">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">&times;</button>
             <h2><i class="fas fa-user-plus"></i> Add New User</h2>
-            
+
             <div class="form-group">
                 <label>Username</label>
                 <input type="text" id="new-username" placeholder="Enter username">
             </div>
-            
+
             <div class="form-group">
                 <label>Email</label>
                 <input type="email" id="new-email" placeholder="Enter email">
             </div>
-            
+
             <div class="form-group">
                 <label>Password</label>
                 <input type="password" id="new-password" placeholder="Enter password">
             </div>
-            
+
             <div class="form-group">
                 <label>Role</label>
                 <select id="new-role">
@@ -302,7 +350,7 @@
                     <option value="admin">Admin</option>
                 </select>
             </div>
-            
+
             <button class="btn" onclick="addUser()">
                 <i class="fas fa-save"></i> Create User
             </button>
@@ -320,7 +368,7 @@
         // Check admin access
         document.addEventListener('DOMContentLoaded', function() {
             const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-            
+
             if (!currentUser || currentUser.role !== 'admin') {
                 showNotification('Admin access required', 'error');
                 setTimeout(() => {
@@ -328,79 +376,91 @@
                 }, 2000);
                 return;
             }
-            
+
             document.getElementById('welcome-user').textContent = `Welcome, ${currentUser.username}`;
             loadAdminData();
             loadCharts();
         });
 
         function loadAdminData() {
-            // Load colleges
+            // Load colleges from localStorage
             const colleges = JSON.parse(localStorage.getItem('colleges')) || [];
             document.getElementById('total-colleges').textContent = colleges.length;
-            
-            // Load colleges table
+
             const collegesTable = document.getElementById('colleges-table-body');
             collegesTable.innerHTML = '';
-            
-            colleges.forEach(college => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${college.id}</td>
-                    <td>${college.name}</td>
-                    <td>${college.location}</td>
-                    <td>${college.rating}/5</td>
-                    <td>${college.fees}</td>
-                    <td>${college.placement}</td>
-                    <td>
-                        <button class="btn-small btn-warning" onclick="editCollege(${college.id})">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn-small btn-danger" onclick="deleteCollege(${college.id})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                collegesTable.appendChild(row);
-            });
-            
-            // Load users
-            const users = JSON.parse(localStorage.getItem('users')) || [
-                { username: 'admin', email: 'admin@eduselect.com', role: 'admin', joined: '2024-01-01', active: true },
-                { username: 'student', email: 'student@eduselect.com', role: 'student', joined: '2024-02-01', active: true },
-                { username: 'parent', email: 'parent@eduselect.com', role: 'parent', joined: '2024-03-01', active: true }
-            ];
-            
+
+            if (colleges.length === 0) {
+                collegesTable.innerHTML = '<tr><td colspan="7" style="text-align: center;">No colleges found. Click "Add New College" to create one.</td></tr>';
+            } else {
+                colleges.forEach(college => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${college.id || 'N/A'}</td>
+                        <td>${college.name || 'N/A'}</td>
+                        <td>${college.location || 'N/A'}</td>
+                        <td>${college.rating || 'N/A'}/5</td>
+                        <td>₹${college.fees || 'N/A'}</td>
+                        <td>${college.placement || 'N/A'}%</td>
+                        <td>
+                            <button class="btn-small btn-warning" onclick="editCollege(${college.id})">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-small btn-danger" onclick="deleteCollege(${college.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    collegesTable.appendChild(row);
+                });
+            }
+
+            // Load users from localStorage
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+
+            // If no users exist, seed with default admin (but don't overwrite if already present)
+            if (users.length === 0) {
+                users = [
+                    { username: 'admin', password: 'admin123', email: 'admin@eduselect.com', role: 'admin', joined: '2024-01-01', active: true },
+                    { username: 'student', password: 'student123', email: 'student@eduselect.com', role: 'student', joined: '2024-02-01', active: true },
+                    { username: 'parent', password: 'parent123', email: 'parent@eduselect.com', role: 'parent', joined: '2024-03-01', active: true }
+                ];
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
             document.getElementById('total-users').textContent = users.length;
-            
-            // Load users table
+
             const usersTable = document.getElementById('users-table-body');
             usersTable.innerHTML = '';
-            
-            users.forEach(user => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${user.username}</td>
-                    <td>${user.email || 'N/A'}</td>
-                    <td><span class="role-badge ${user.role}">${user.role}</span></td>
-                    <td>${user.joined || 'N/A'}</td>
-                    <td><span class="status-badge ${user.active ? 'active' : 'inactive'}">${user.active ? 'Active' : 'Inactive'}</span></td>
-                    <td>
-                        <button class="btn-small btn-warning" onclick="editUser('${user.username}')">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn-small btn-danger" onclick="deleteUser('${user.username}')" ${user.username === 'admin' ? 'disabled' : ''}>
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                usersTable.appendChild(row);
-            });
-            
+
+            if (users.length === 0) {
+                usersTable.innerHTML = '<tr><td colspan="6" style="text-align: center;">No users found.</td></tr>';
+            } else {
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.username}</td>
+                        <td>${user.email || 'N/A'}</td>
+                        <td><span class="role-badge ${user.role}">${user.role}</span></td>
+                        <td>${user.joined || 'N/A'}</td>
+                        <td><span class="status-badge ${user.active ? 'active' : 'inactive'}">${user.active ? 'Active' : 'Inactive'}</span></td>
+                        <td>
+                            <button class="btn-small btn-warning" onclick="editUser('${user.username}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-small btn-danger" onclick="deleteUser('${user.username}')" ${user.username === 'admin' ? 'disabled' : ''}>
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    usersTable.appendChild(row);
+                });
+            }
+
             // Load other stats
             const comparisonList = JSON.parse(localStorage.getItem('comparisonList')) || [];
             document.getElementById('active-comparisons').textContent = comparisonList.length;
-            
+
             // Random views for demo
             document.getElementById('total-views').textContent = Math.floor(Math.random() * 1000) + 500;
         }
@@ -427,7 +487,7 @@
                     }
                 });
             }
-            
+
             // Comparison Activity Chart
             const comparisonCtx = document.getElementById('comparison-chart');
             if (comparisonCtx) {
@@ -447,6 +507,47 @@
                     }
                 });
             }
+
+            // Saved Colleges Chart
+            const savedCtx = document.getElementById('saved-chart');
+            if (savedCtx) {
+                new Chart(savedCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Engineering', 'Medical', 'Arts', 'Commerce'],
+                        datasets: [{
+                            data: [45, 25, 20, 10],
+                            backgroundColor: ['#3498db', '#2ecc71', '#f1c40f', '#e74c3c']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
+
+            // User Growth Chart
+            const usersCtx = document.getElementById('users-chart');
+            if (usersCtx) {
+                new Chart(usersCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'New Users',
+                            data: [20, 35, 42, 58, 72, 89],
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'rgba(231, 76, 60, 0.1)',
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                });
+            }
         }
 
         function showTab(tabId) {
@@ -454,15 +555,15 @@
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
-            
+
             // Remove active class from all buttons
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            
+
             // Show selected tab
             document.getElementById(tabId).classList.add('active');
-            
+
             // Add active class to clicked button
             event.target.classList.add('active');
         }
@@ -475,25 +576,82 @@
             document.getElementById('add-user-modal').style.display = 'flex';
         }
 
+        function addCollege() {
+            const name = document.getElementById('college-name').value.trim();
+            const location = document.getElementById('college-location').value.trim();
+            const rating = parseFloat(document.getElementById('college-rating').value);
+            const fees = document.getElementById('college-fees').value.trim();
+            const placement = parseInt(document.getElementById('college-placement').value);
+            const courses = document.getElementById('college-courses').value.trim();
+            const website = document.getElementById('college-website').value.trim();
+            const description = document.getElementById('college-description').value.trim();
+
+            if (!name || !location || isNaN(rating) || !fees || isNaN(placement)) {
+                showNotification('Please fill all required fields', 'error');
+                return;
+            }
+
+            // Get existing colleges
+            let colleges = JSON.parse(localStorage.getItem('colleges')) || [];
+
+            // Generate new ID (simple increment)
+            const newId = colleges.length > 0 ? Math.max(...colleges.map(c => c.id || 0)) + 1 : 1;
+
+            const newCollege = {
+                id: newId,
+                name,
+                location,
+                rating: rating.toFixed(1),
+                fees,
+                placement,
+                courses: courses || 'Not specified',
+                website: website || '#',
+                description: description || ''
+            };
+
+            colleges.push(newCollege);
+            localStorage.setItem('colleges', JSON.stringify(colleges));
+
+            showNotification('College added successfully', 'success');
+            closeModal();
+            loadAdminData(); // Refresh table
+
+            // Clear form
+            document.getElementById('college-name').value = '';
+            document.getElementById('college-location').value = '';
+            document.getElementById('college-rating').value = '';
+            document.getElementById('college-fees').value = '';
+            document.getElementById('college-placement').value = '';
+            document.getElementById('college-courses').value = '';
+            document.getElementById('college-website').value = '';
+            document.getElementById('college-description').value = '';
+        }
+
         function addUser() {
-            const username = document.getElementById('new-username').value;
-            const email = document.getElementById('new-email').value;
-            const password = document.getElementById('new-password').value;
+            const username = document.getElementById('new-username').value.trim();
+            const email = document.getElementById('new-email').value.trim();
+            const password = document.getElementById('new-password').value.trim();
             const role = document.getElementById('new-role').value;
-            
+
             if (!username || !email || !password) {
                 showNotification('Please fill all fields', 'error');
                 return;
             }
-            
+
             let users = JSON.parse(localStorage.getItem('users')) || [];
-            
+
             // Check if username exists
             if (users.find(u => u.username === username)) {
                 showNotification('Username already exists', 'error');
                 return;
             }
-            
+
+            // Check if email exists
+            if (users.find(u => u.email === email)) {
+                showNotification('Email already registered', 'error');
+                return;
+            }
+
             // Add new user
             const newUser = {
                 username,
@@ -503,14 +661,14 @@
                 joined: new Date().toISOString().split('T')[0],
                 active: true
             };
-            
+
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
-            
+
             showNotification('User created successfully', 'success');
             closeModal();
             loadAdminData();
-            
+
             // Clear form
             document.getElementById('new-username').value = '';
             document.getElementById('new-email').value = '';
@@ -518,6 +676,7 @@
         }
 
         function editCollege(collegeId) {
+            // For simplicity, redirect to colleges.html with edit parameter
             window.location.href = `/colleges.html?edit=${collegeId}`;
         }
 
@@ -526,7 +685,7 @@
                 let colleges = JSON.parse(localStorage.getItem('colleges')) || [];
                 colleges = colleges.filter(c => c.id !== collegeId);
                 localStorage.setItem('colleges', JSON.stringify(colleges));
-                
+
                 showNotification('College deleted', 'success');
                 loadAdminData();
             }
@@ -541,12 +700,12 @@
                 showNotification('Cannot delete main admin account', 'error');
                 return;
             }
-            
+
             if (confirm(`Are you sure you want to delete user ${username}?`)) {
                 let users = JSON.parse(localStorage.getItem('users')) || [];
                 users = users.filter(u => u.username !== username);
                 localStorage.setItem('users', JSON.stringify(users));
-                
+
                 showNotification('User deleted', 'success');
                 loadAdminData();
             }
@@ -572,10 +731,10 @@
         function showNotification(message, type = 'success') {
             const notification = document.getElementById('notification');
             const notificationText = document.getElementById('notification-text');
-            
+
             notificationText.textContent = message;
             notification.className = `notification ${type} show`;
-            
+
             setTimeout(() => {
                 notification.classList.remove('show');
             }, 3000);
